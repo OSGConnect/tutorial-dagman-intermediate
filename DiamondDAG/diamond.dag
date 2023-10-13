@@ -1,0 +1,9 @@
+# Simple Diamond DAG example using sleep jobs
+JOB TOP ./SleepJob/sleep.sub
+JOB LEFT ./SleepJob/sleep.sub
+JOB RIGHT ./SleepJob/sleep.sub
+JOB BOTTOM ./SleepJob/sleep.sub
+
+PARENT TOP CHILD LEFT RIGHT
+PARENT LEFT RIGHT CHILD BOTTOM
+

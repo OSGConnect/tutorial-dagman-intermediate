@@ -1,0 +1,5 @@
+# DAG with only one node that retries up to 5 times
+JOB ONLY fragile.sub
+
+RETRY ONLY 5
+

@@ -1,0 +1,9 @@
+# Simple Diamond DAG of ls jobs
+JOB TOP    ls.sub DIR ./top
+JOB LEFT   ls.sub DIR ./left
+JOB RIGHT  ls.sub DIR ./right
+JOB BOTTOM ls.sub DIR ./bottom
+
+PARENT TOP CHILD LEFT RIGHT
+PARENT LEFT RIGHT CHILD BOTTOM
+
