@@ -1,0 +1,11 @@
+# DAG that forms a cross (X)
+JOB A sleep.sub
+JOB B sleep.sub
+JOB C sleep.sub
+JOB D sleep.sub
+JOB E sleep.sub
+
+
+PARENT A B CHILD C
+PARENT C CHILD D E
+

@@ -1,0 +1,9 @@
+# Simple Diamond DAG that splices in another DAG
+JOB TOP sleep.sub
+SPLICE LEFT cross.dag
+SPLICE RIGHT cross.dag
+JOB BOTTOM sleep.sub
+
+PARENT TOP CHILD LEFT RIGHT
+PARENT LEFT RIGHT CHILD BOTTOM 
+

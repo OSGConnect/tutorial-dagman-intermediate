@@ -1,0 +1,7 @@
+JOB A echo.sub DIR ./job
+JOB B echo.sub DIR ./job
+
+PARENT A CHILD B
+
+SCRIPT PRE B ../verify.sh
+

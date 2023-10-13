@@ -1,0 +1,11 @@
+# Job that runs fragile script
+executable = fragile.sh
+arguments  = $(RETRY)
+log        = job.log
+
+request_cpus   = 1
+request_memory = 1024k
+request_disk   = 1024k
+
+queue
+
