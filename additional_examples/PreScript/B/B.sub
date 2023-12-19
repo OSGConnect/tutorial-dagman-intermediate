@@ -1,0 +1,14 @@
+# Simple job that sums the contents of data.txt
+executable = B.sh
+output     = ../sum.txt
+error	   = B.err
+log        = B.log
+
+transfer_input_files = ../data.txt
+
+request_cpus   = 1
+request_memory = 1GB
+request_disk   = 1GB
+
+queue
+

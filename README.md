@@ -85,15 +85,12 @@ and DAGMan monitors the contents of this file to generate the contents of the  `
 
 ## Monitoring DAGMan
 
-Since DAGMan is submitted to the AP job queue as a job itself and all jobs
-managed by DAGMan are submitted to the AP job queue, the normal methods of
-job monitoring work. For more inforomation checkout
-[DAGMan Interaction Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-interaction.html)
+The DAGMan job and the jobs in the DAG workflow can be found in the AP job queue 
+and so the normal methods of job monitoring work. 
+That also means that you can interact with these jobs, though in a more limited fashion than a regular job (see [Running and Managing DAGMan](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-interaction.html) for more details).
 
-The primary way of running a query on the job queue will result in an
-condensed batch view of jobs submitted, running, and managed by the
-DAGMan job proper. You can add one or two more flags to get more per
-job information about jobs running under DAGMan:
+A plain `condor_q` command will show a condensed batch view of the jobs submitted, running, and managed by the DAGMan job proper. 
+For more information about jobs running under DAGMan, use the `-nobatch` and `-dag` flags:
 
 ```
 # Basic job query (Batched/Condensed)
@@ -113,50 +110,59 @@ by running:
 $ condor_watch_q
 ```
 
-Finally, if the DAGMan job is still running or in the AP job queue then you
-can get lots of information about the DAG such as nodes states, submitted jobs,
-and overall progress by running:
+> Note that `condor_watch_q` works by monitoring the log files of jobs that are in the queue, but only at the time of its execution. 
+> Additional jobs submitted by DAGMan while `condor_watch_q` is running will not appear in `condor_watch_q`.
+> To see additional jobs as they are submitted, wait for DAGMan to create the `.nodes.log` file, then run
+>
+> ```
+> $ condor_watch_q -files *.nodes.log
+> ```
+
+For more detail about the status and progress of your DAG workflow, you can use the noun-verb command:
 
 ```
-$ htcondor dag status <DAGManJobId>
+$ htcondor dag status <DAGManJobID>
 ```
 
-Note: The DAGMan job ID is the cluster ID of the DAGMan job proper.
+where `<DAGManJobID>` is the ID for the DAGMan job proper. 
+Note that the information in the output of this command does not update frequently, and so it is not suited for short-lived DAG workflows such as the current example.
 
-## Where do my jobs run?
+When your DAG workflow has completed, the DAGMan job proper will disappear from the queue. 
+If the DAG workflow completed successfully, then the `.dag.dagman.out` file should have a message that `All jobs Completed!`, though it may be difficult to find manually (try using `grep "All jobs Completed!" *.dag.dagman.out` instead).
+If the DAG workflow was aborted due to an error, then the `.dag.dagman.out` file should have the message `Aborting DAG...`.
+Assuming that the DAGMan job proper did not crash, then regardless the final line of the `.dag.dagman.out` file should contain `(condor_DAGMAN) pid ####### EXITING WITH STATUS #`, where the number after `STATUS` is the exit code (0 if success, not 0 if failure).
 
-It can be difficult to discern where your job is ran from, and the short
-answer is DAGMan does work from the working directory that you submitted
-it from. Meaning all other work such as job submission will be relative to
-the directory DAGMan was submitted from.
+## How DAGMan Handles Relative Paths
 
-This can be oberved by inspecting the sleep.sub submit file in the SleepJob
-sub-directory and the diamond.dag decription file. In the diamond.dag file
-the jobs are declared with
+By default, the directory that DAGMan submits all jobs from is the same directory you are in when you run `condor_submit_dag`.
+This directory (let's call it the submit directory) is the starting directory for any relative path in the `.dag` input file *or in the node `.sub` files that DAGMan submits*. 
+
+This can be observed by inspecting the `sleep.sub` submit file in the `SleepJob` sub-directory and by inspecting the `diamond.dag` input file. 
+In the `diamond.dag` file, the jobs are declared using a relative path.
+For example:
 
 ```
-./SleepJob/sleep.sub
+JOB TOP ./SleepJob/sleep.sub
 ```
 
-meaning the submit file is sleep.sub found at SleepJob directory in this
-current directory. Similarly, inside sleep.sub the log command is set to
-a similar path so that the job event log is written to the sub-directory
-SleepJob. This only applies to information using relative paths.
+This tells DAGMan that the submit file for the `JOB` `TOP` is `sleep.sub`, located in the `SleepJob` in the submit directory (`.`). 
+Similarly, the submit file `sleep.sub` uses paths relative to the submit directory for defining the save locations for the `.log`, `.out`, and `.err` files.
+This behavior is consistent with submission of regular (non-DAGMan) jobs, e.g. `condor_submit SleepJob/sleep.sub`.
 
-This is just the default behavior, and there are ways to make the location
-of job submission/management more obvious.
+> Contrary to the above behavior, the `.dag.*` log/output files generated by the DAGMan job proper (discussed [above](#what-happens)) will always be in the same directory as the `.dag` input file.
 
-[File Paths in DAGs Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-file-paths.html)
+This is just the default behavior, and there are ways to make the location of job submission/management more obvious.
+See the HTCondor documentation for more details: [File Paths in DAGs](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-file-paths.html).
 
 ## Additional Examples
 
-Additional examples are provided in the folder `additional_examples` with corresponding READMEs. 
-The following order of tutorial examples to cover various topics related to DAGMan is recommended:
+Additional examples that cover various topics related to DAGMan are provided in the folder `additional_examples` with corresponding READMEs. 
+The following order of the examples is recommended:
 
-1. RescueDag - Example for DAGs that don't exit successfully
-3. PreScript - Example using a pre-script for a node
-4. PostScript - Eample using a post-script for a node
-5. Retry - Example for retrying a failed node
-6. VARS - Example of reusing a single submit file for multiple nodes with differing variables
-7. SubDAG (advanced) - Example using a subdag
-8. Splice (advanced) - Example of using DAG splices
+1. `RescueDag` - Example for DAGs that don't exit successfully
+3. `PreScript`- Example using a pre-script for a node
+4. `PostScript` - Example using a post-script for a node
+5. `Retry` - Example for retrying a failed node
+6. `VARS` - Example of reusing a single submit file for multiple nodes with differing variables
+7. `SubDAG` (advanced) - Example using a subDAG
+8. `Splice` (advanced) - Example of using DAG splices

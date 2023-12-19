@@ -1,5 +1,5 @@
-JOB A echo.sub DIR ./job
-JOB B echo.sub DIR ./job
+JOB A A.sub DIR ./A
+JOB B B.sub DIR ./B
 
 PARENT A CHILD B
 
