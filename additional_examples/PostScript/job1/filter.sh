@@ -4,12 +4,13 @@
 # Check to make sure each line is a number.
 
 file='../data.csv'
-log_file='verify.log'
+filtered_file='../filtered_data.csv'
+log_file='filter.log'
 
 # check if file exists
 if [ ! -f "$file" ] ; then 
 	cat << EOF > $log_file
-Executing \`verify.sh\`
+Executing \`filter.sh\`
 $(date)
 
 Data File does not exist: $file
@@ -21,25 +22,26 @@ EOF
 fi
 
 cat << EOF > $log_file
-Executing \`verify.sh\`
+Executing \`filter.sh\`
 $(date)
 
 Data File = $file
 
+Removed the following lines from $file:
 EOF
 
-error=false
+# If line is an integer, output to $filtered_file
 
 for line in $(cat $file); do 
     case $line in
-        ''|*[!0-9]*) error=true ;;
+        ''|*[!0-9]*) 
+			echo "$line" >> $log_file
+			;;
+		*)
+			echo "$line" >> $filtered_file
+			;;
     esac
 done
-
-if $error ; then
-    echo "Encountered non-integer entry in 'data.csv'" >> $log_file
-    exit 1
-fi
 
 exit 0
 

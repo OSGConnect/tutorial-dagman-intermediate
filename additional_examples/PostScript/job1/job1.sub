@@ -1,0 +1,16 @@
+job_name = job1
+
+log = $(job_name).$(Cluster).log
+
+executable = $(job_name).sh
+output = $(job_name).out
+error = $(job_name).err
+
+request_cpus = 1
+request_memory = 1GB
+request_disk = 1GB
+
+transfer_output_files = data.csv
+transfer_output_remaps = "data.csv = ../data.csv"
+
+queue 1

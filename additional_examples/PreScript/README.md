@@ -25,6 +25,7 @@ in the input `.dag` that checks that the contents of `data.csv` are valid.
 > Note: `SCRIPT` will use the same `DIR` value as defined in the node's
 > `JOB` definition.
 
+Explore the contents of `sum.dag` and the related files in the `job1` and `job2` directories.
 Run the `sum.dag` without modification:
 
 ```

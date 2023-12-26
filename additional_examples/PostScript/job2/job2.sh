@@ -3,13 +3,13 @@
 # Process contents of data file
 # Check to make sure each line is a number.
 
-file='data.csv'
+file='filtered_data.csv'
 
 # Main
 
-if [ ! -f $file ] ; then
-    echo "Data file does not exist: $file"
-    exit 1
+if [ ! -f $file ] ; then 
+	echo "Data file does not exist: $file"
+	exit 1
 fi
 
 error=false
