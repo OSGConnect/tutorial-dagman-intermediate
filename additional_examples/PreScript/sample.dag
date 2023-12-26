@@ -1,7 +1,0 @@
-JOB A A.sub DIR ./A
-JOB B B.sub DIR ./B
-
-PARENT A CHILD B
-
-SCRIPT PRE B ../verify.sh
-
