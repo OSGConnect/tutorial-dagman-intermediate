@@ -1,22 +1,26 @@
-# Reusing a Single Job Submit Description
+# Reusing a Single Submit File for Multiple Nodes
 
 While each node can take a unique job submit description, it can be a hassle
 if all of your jobs are essentially the same with some slight variance. DAGMan
-can help with this by allowing the reuse of a single job submit file and passing
+can help with this by allowing the reuse of a single submit file and passing
 variables specific to a node for better reusability.
 
-The DAG description langauge has the `VARS` command, short for variables, which
-takes a node and a list of key="value" pairs of information to apply to the
-given node at subimission time. The variables declared can either be normal
-macros that will be avaiable for dereference in the submit description (`$()`)
-or even custom attributes to add to the submitted node jobs job ad by using the
-`My.` syntax.
+Specifically, DAGMan uses the `VARS` command to define the variables for 
+a particular node. This is done using 
 
 ```
 VARS <Node Name> macro="Foo" My.attr="Bar"
 ```
 
-## Example Using Node VARS
+where first the node is specified (`<Node Name>`) followed by a list of 
+`key="value"` pairs to define the variables to be used with that node at submission
+time. The default behavior is that the `key` definition can be referenced in 
+the job's submit file using the typical submit variable syntax, i.e. `$(key)` in the
+submit file will evaluate to `"value"`. Alternatively, you can define a custom job 
+attribute by prefixing your `key` with `My.`, which means that `"value"` will be
+available in the job's ClassAds. 
+
+## Exercise
 
 In this example, all nodes in the `diamond.dag` use the same job submit description
 file `append.sub`, but also pass a different secrets to the different node jobs.
