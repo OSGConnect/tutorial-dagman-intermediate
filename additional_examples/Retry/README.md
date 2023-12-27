@@ -1,26 +1,62 @@
 # Retrying Failed Nodes
 
-Another way to combat intermittent DAGMan node failures without having
-to restart the entire DAG is with the `RETRY` command in the DAG description
-language. `RETRY` is simple. Any node that fails for some reason (Pre-Script,
-Post-Script, or Job) will be rerun up to `n` times or the node has completed
-successfully.
+As demonstrated in the earlier examples, the rescue DAG utility allows you to 
+resume a DAG from where it failed without having to restart the whole DAG 
+from scratch. While the rescue DAG utility is useful, it is not necessarily 
+convenient, since it requires manual intervention and resubmission.
 
-## Example Using Node Retries
+If you know that a node will occasionally fail through no fault of your own, 
+and simply want DAGMan to try that node again, then you can tell DAGMan to
+automatically retry that node again. To do so, define a `RETRY` statement :
 
-In this example, the `sample.dag` has only one node called `ONLY` that runs
-`fragile.sh`. This executable (`fragile.sh`) will only exit successfully if
-it is passed `3` as an input. In the `fragile.sub` submit file the current
-nodes retry number is passed as an argument to the script. The nodes retry
-number is an incrementing number starting at zero representing which retry
-attempt this nodes execution is.
+```
+RETRY your_node N
+```
 
-If the `sample.dag` is submitted without any modifications then we should
-observe a successful DAG completion. However, upon closer inspection of the
-`sample.dag.dagman.out` file it can be observed that the `ONLY` node ran a total
-of four times. The successful node execution attempt was the third retry
-attempt where the DAG passed `3` to the job submit description to use as an
-argument for the `fragile.sh`
+where you should replace `your_node` with the name of the 
+node that experiences intermittent failures and `N` with the number of times
+that you want DAGMan to automatically retry that node. Now, should that node
+fail for any reason (whether from a `PRE` or `POST` script, or the `JOB` proper), 
+DAGMan will automatically retry that node up, to `N` times.
 
-[DAGMan Node Retries Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/node-pass-or-fail.html#retrying-failed-nodes)
+You can also apply the `RETRY` statement to all nodes in the DAG with
+```
+RETRY ALL_NODES N
+```
+
+where you replace `N` with the number of automatic retries.
+
+> Note that the number of automatic retries should generally be kept low
+> (ideally at 3 or less) if using the `RETRY` statement for handling intermittent failures. 
+> If your job repeatedly fails, it is better to troubleshoot the underlying cause
+> of the failure instead of increasing the value of the `RETRY` statement.
+
+## Exercise
+
+To start, first examine the contents of `retry.dag`. What are the nodes in the DAG?
+How is the `RETRY` statement used?
+
+Next, examine the contents of `fragile.sub`. What is the executable? What 
+arguments are passed to the executable? What files will be generated when 
+this job is submitted?
+
+In this example, the `retry.dag` has only one node (`fragile`) that runs
+`fragile.sh`. The job for the `fragile` node passes the current number of retries 
+(`$(RETRY)` in the `.sub` file) to the executable `fragile.sh`. The executable will 
+only exit successfully if the number `2` is passed as an input. 
+
+Now run `retry.dag` without modification:
+
+```
+$ condor_submit_dag retry.dag
+```
+
+The DAG should run to completion. 
+
+Examine the output files of the `fragile` job. Can you tell how many times
+the job ran? Confirm your answer by examining the contents of
+`retry.dag.dagman.out`.
+
+For more information on the `RETRY` command, see 
+[DAGMan Node Retries Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/node-pass-or-fail.html#retrying-failed-nodes).
 

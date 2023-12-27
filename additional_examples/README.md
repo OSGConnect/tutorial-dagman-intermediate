@@ -12,5 +12,4 @@ Additional examples, with documentation, are provided in this folder.
 
 For a better breakdown of individual examples checkout the README in the
 given examples sub-directory. Links to the documentation in regards to
-specific DAGMan feature will also be available in the given examples
-README.
+specific DAGMan feature is also available in the given example's README.

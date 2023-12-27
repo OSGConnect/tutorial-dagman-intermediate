@@ -1,5 +1,5 @@
 # DAG with only one node that retries up to 5 times
-JOB ONLY fragile.sub
+JOB fragile fragile.sub DIR ./fragile
 
-RETRY ONLY 5
+RETRY fragile 4
 
