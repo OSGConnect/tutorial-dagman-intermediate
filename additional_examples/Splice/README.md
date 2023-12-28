@@ -1,5 +1,17 @@
 # DAG Splicing
 
+Copying from the SubDAG guide:
+
+> Unlike a DAG splice where the spliced DAG is read and all of its
+> nodes are merged into the parent DAGs workflow, a SubDAG is
+> a node that runs `condor_submit_dag` on the DAG file. This means
+> the SubDAG will have all of its own DAGMan stuff (Process, job in
+> the AP job queue, files, etc.) and to the parent DAG is just
+> another node making SubDAGs more versatile than Splices. However,
+> SubDAGs come at the cost of the fact that each SubDAG is its own
+> job/process making more work for the AP schedd and more files
+> to dig through.
+
 Sometimes there are repeating patterns in a DAG that can be described
 as a different DAG and incooperated into other DAGs. One method of
 utilizing another DAG within a DAG is via Splicing. When a DAG is

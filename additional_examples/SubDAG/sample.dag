@@ -1,8 +1,8 @@
 # A DAG that runs a dynamically created SubDAG
-JOB PRODUCTION produce.sub
-SUBDAG EXTERNAL BAG other.dag
-JOB END sleep.sub
+JOB split split.sub
+SUBDAG EXTERNAL my_subdag my_subdag.dag
+JOB recombine recombine.sub
 
-PARENT PRODUCTION CHILD BAG
-PARENT BAG CHILD END 
+PARENT split CHILD my_subdag
+PARENT my_subdag CHILD recombine 
 
