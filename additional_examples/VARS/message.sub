@@ -1,0 +1,15 @@
+# Simple job to run custom script
+executable = message.sh
+arguments  = $(JOB) $(ClusterId) $(Process) $(my_message)
+log        = job.log
+
+request_cpus   = 1
+request_memory = 1GB
+request_disk   = 1GB
+
+message_output_file = message.$(JOB).$(Process).txt
+transfer_output_files = $(message_output_file)
+transfer_output_remaps = "$(message_output_file) = output/$(message_output_file)"
+
+queue 2
+

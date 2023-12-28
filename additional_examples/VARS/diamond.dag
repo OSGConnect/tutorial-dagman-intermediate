@@ -1,15 +1,15 @@
 # Diamond DAG utilizing node VARS
-JOB TOP append.sub
-JOB LEFT append.sub
-JOB RIGHT append.sub
-JOB BOTTOM append.sub
+JOB job1 message.sub
+JOB job2a message.sub
+JOB job2b message.sub
+JOB job3 message.sub
 
-VARS ALL_NODES secret="No secret specified"
+VARS ALL_NODES my_message="No message provided."
 
-VARS TOP secret="Thanks RCFs for your hard work!!"
-VARS LEFT secret="DAGMan is scary"
-VARS RIGHT secret="HTCondor is cool"
+VARS job1 my_message="Thanks RCFs for your hard work!!"
+VARS job2a my_message="DAGMan is scary."
+VARS job2b my_message="HTCondor is cool."
 
-PARENT TOP CHILD LEFT RIGHT
-PARENT LEFT RIGHT CHILD BOTTOM
+PARENT job1 CHILD job2a job2b
+PARENT job2a job2b CHILD job3
 
