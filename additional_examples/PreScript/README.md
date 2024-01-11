@@ -52,6 +52,12 @@ In this example, `job2/verify.sh` generates a log file `job2/verify.log`.
 Look in the log file to determine the reason why the `verify.sh` script failed.
 Make the necessary changes to `data.csv` and submit the DAG a second time.
 
+> DAGMan will use the rescue DAG and recognize that that it only needs to run
+> the node `job2`. Since the `PRE` script is associated with node `job2`, the
+> the `verify.sh` script will run again on the modified `data.csv`. If the rescue
+> DAG was not used, then `data.csv` would be regenerated when `job1` node is
+> executed, overwriting your changes. 
+
 If you make the correct changes, then when DAGMan starts node `job2` the
 `PRE` script should run successfully and DAGMan should submit the corresponding 
 job. Once it finishes, the sum of the contents of `data.csv` will be printed
