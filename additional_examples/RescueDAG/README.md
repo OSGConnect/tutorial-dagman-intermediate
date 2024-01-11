@@ -29,7 +29,10 @@ and descendants).
 ## Bad DAG Example
 
 In this directory is another `diamond.dag` input file.
-Run this DAG without modification:
+Examine the contents of the file and determine the structure of the DAG
+and the submit files corresponding to each node.
+
+Run the DAG without modification:
 
 ```
 $ condor_submit_dag diamond.dag
@@ -50,7 +53,7 @@ $ cat diamond.dag.rescue001
 In this example the RIGHT node has failed for some reason. This
 notice of node failure can be found in both the rescue file and
 the `<DAG File>.dagman.out` log file. The RIGHT node's working
-directory `right` should shine more information on what went wrong.
+directory `right` should provide more information on what went wrong.
 Looking at the job's standard error (`.err`) file it states:
 
 ```
@@ -65,5 +68,6 @@ resubmit the DAG workflow. DAGMan should start back up but skip the
 DONE nodes `TOP` and `LEFT` and proceed directly to the `RIGHT` node, 
 followed by the `BOTTOM` node, and finish successfully.
 
-For more information, see the HTCondor documentation: [Rescue from a Failed DAG](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-resubmit-failed.html#the-rescue-dag).
+For more information, see the HTCondor documentation: 
+[Rescue from a Failed DAG](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-resubmit-failed.html#the-rescue-dag).
 

@@ -5,8 +5,8 @@ error      = $(JOB).err
 log        = $(JOB).log
 
 request_cpus   = 1
-request_memory = 1024k
-request_disk   = 1024k
+request_memory = 1GB
+request_disk   = 1GB
 
 queue
 
