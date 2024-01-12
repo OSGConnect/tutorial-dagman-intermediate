@@ -9,13 +9,13 @@ you need `condor_submit_dag`. This is where the `SUBDAG` utility is useful.
 In the main `.dag` input file, declare the following line:
 
 ```
-SUBDAG EXTERNAL <Node Name> <SubDAG input>.dag
+SUBDAG EXTERNAL <Node Name> <SubDAG Input>.dag
 ```
 
 This will create a node named `<Node Name>` in the main DAG workflow
 that can be used for defining the PARENT/CHILD relationships, while the
 execution of the node itself will be carried out using `condor_submit_dag`
-on the `<SubDAG input>.dag` workflow. The SubDAG will be executed 
+on the `<SubDAG Input>.dag` workflow. The SubDAG will be executed 
 completely independently of the main DAG, but just like a regular node,
 the main DAG will not start the SubDAG node until the PARENT node(s) 
 complete and will not move on to the CHILD node(s) until the SubDAG 

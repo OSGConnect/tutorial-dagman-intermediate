@@ -1,44 +1,102 @@
 # DAG Splicing
 
-Copying from the SubDAG guide:
+Similar to a SubDAG, DAG splicing is a way of creating a complex DAG from smaller individual DAGs.
+When a smaller DAG is spliced into the larger DAG, every node within the smaller DAG is incorporated
+into the larger DAG, resulting in one single DAG.
 
-> Unlike a DAG splice where the spliced DAG is read and all of its
-> nodes are merged into the parent DAGs workflow, a SubDAG is
-> a node that runs `condor_submit_dag` on the DAG file. This means
-> the SubDAG will have all of its own DAGMan stuff (Process, job in
-> the AP job queue, files, etc.) and to the parent DAG is just
-> another node making SubDAGs more versatile than Splices. However,
-> SubDAGs come at the cost of the fact that each SubDAG is its own
-> job/process making more work for the AP schedd and more files
-> to dig through.
+When the spliced DAG workflow is executed, there is only ever one DAGMan job proper.
+For this reason, a spliced DAG workflow will not use as many resources on the AP (access point) as a
+SubDAG, since every SubDAG in a workflow creates its own DAGMan job when called.
+This is the main advantage of using DAG splicing over using SubDAGs. 
+Another advantage is that DAG-wide options will apply to the spliced nodes.
 
-Sometimes there are repeating patterns in a DAG that can be described
-as a different DAG and incooperated into other DAGs. One method of
-utilizing another DAG within a DAG is via Splicing. When a DAG is
-spliced into another, that DAGs nodes added into the parent DAGs
-dependency flow. Meaning if you had a simple DAG `A->B->C` and
-node `B` was a splice of another DAG `X Y` then the resulting DAG
-would be a diamond DAG.
+A disadvantage of using DAG splicing instead of SubDAGs is that node-specific options (e.g., `SCRIPT`, `RETRY`, `VARS`)
+cannot be applied to the DAG splice as a whole, and instead must be defined within the `.dag`
+input file that is being spliced into the larger DAG.
+Another disadvantage is that all the DAG information for the spliced nodes must be declared 
+at submission time for the larger DAG.
 
-## Key Things About Splicing
+The syntax for DAG splicing is as follows:
 
-1. Since the spliced DAG nodes are merged into the parent DAG, only one DAG is ran resulting in less work for an AP schedd.
-2. Nodes in the spliced DAG are renamed to `<Splice Node Name>+<Node Name>` so node `A` in Splice `X` would be `X+A`
-3. Various node customization options can be applied to nodes in a splice but not a splice as a whole. Including:
-    1. Scripts (Pre|Post|Hold)
-    2. Retries
-    3. VARS
-4. All DAG information must be declared in the splice DAG file at submission time of the parent DAG
+```
+SPLICE <Splice Name> <Splice Input>.dag
+```
 
-## Example Using DAG Splice
+where `<Splice Name>` is similar in use to a `JOB` node name, and `<Splice Input>.dag` 
+defines the DAG that is to be spliced. 
+The spliced DAG can then be referenced when defining PARENT/CHILD relationships by using the `<Splice Name>`. 
 
-In this example, we go back to the simple `diamond.dag` example. However,
-this time around the middle two nodes (`LEFT` and `RIGHT`) are more complex
-DAG workflows that are exactly the same. Both `LEFT` and `RIGHT` are actually
-DAGs in the shape of an `X` specified in the `cross.dag` file. If the
-`diamond.dag` is submitted without any modifications then it should be observed
-that the DAG only creates the DAGMan files for `diamond.dag` and that twelve
-jobs run rather than the usual four in a diamond DAG.
+> The PARENT/CHILD relationships for a splice are applied to the first and last nodes 
+> within the spliced DAG. 
+> That is, if splice `X` is the CHILD of node `A`, then every first (top-level) node defined 
+> in the `X` DAG input file will be a CHILD of node `A`.
+> Similarly, if splice `X` is the PARENT of node `B`, then every last (bottom-level) node 
+> defined in the `X` DAG input file will be a PARENT of `B`.
+> This can lead to an exponential number of dependencies when a splice with many 
+> nodes is the PARENT of another splice with many nodes.
 
-[DAGMan Splicing Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-using-other-dags.html#dag-splicing)
+Since the nodes defined in the spliced DAG are copied into the larger DAG, they are 
+also renamed to help keep track of their origin.
+The nodes are renamed using the syntax `<Splice Name>+<Original Node Name>` where
+`<Original Node Name>` is the name of the node as defined in `<Splice Input>.dag`. 
+This allows you to define multiple splices using the same input DAG.
+For example, if `<Splice Input>.dag` defines node `A` and you could define a splice `X`
+and splice `Y` using that input DAG, the resulting node names in the larger DAG would 
+be `X+A` and `Y+A`, respectively.
+
+To illustrate what DAG splicing is, consider the following scenario: you've constructed
+a diamond DAG workflow (`diamond.dag`) and would like to add nodes before and
+after the diamond (`initialize` and `finalize)`. 
+You could directly edit `diamond.dag` to add the nodes, but you could also create a new
+DAG with the diamond DAG spliced in.
+The input file for the spliced DAG would look like this:
+
+```
+# spliced.dag
+JOB initialize initialize.sub
+JOB finalize finalize.sub
+SPLICE diamond diamond.dag
+
+PARENT initialize CHILD diamond
+PARENT diamond CHILD finalize
+```
+
+With this input file, we've defined the following relations:
+
+![Spliced DAG figure](../../.images/SplicedDiamondDAG.png)
+
+When submitted, DAGMan will copy the nodes from `diamond.dag` into the spliced DAG (with renaming), so that the actual nodes and relationships look like this:
+
+![Spliced Diamond DAG figure](../../.images/SplicedDiamondDAGFull.png)
+
+## Exercise
+
+For the exercise, we will consider a slightly more complicated example. 
+First, examine the contents of `spliced.dag` and identify the relationships of the nodes/splices therein.
+Next, examine the contents of `cross.dag` and identify the relationships of its nodes.
+Finally, try to construct what the full DAG workflow will look like after the `cross.dag` nodes have been
+spliced into `spliced.dag`.
+
+Check your understanding using the following figures:
+
+[spliced.dag](../../.images/SplicedCrossDAG.png)
+
+[cross.dag](../../.images/CrossDAG.png)
+
+[Full DAG after splicing](../../.images/SplicedCrossDAGFull.png)
+
+Now submit the spliced DAG without modification:
+
+```
+$ condor_submit_dag spliced.dag
+```
+
+Monitor the progress of the DAG. 
+A total of 12 jobs should be submitted by DAGMan, and the only DAGMan output files generated
+are those corresponding to `spliced.dag`. 
+Once the DAG workflow is finished, examine the contents of `spliced.dag.dagman.out`. 
+Did DAGMan run the nodes in the order that you expected?
+
+For more information on the `SPLICE` utility, see the
+[DAGMan Splicing Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-using-other-dags.html#dag-splicing).
 
