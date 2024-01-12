@@ -94,8 +94,6 @@ $ condor_submit_dag spliced.dag
 Monitor the progress of the DAG. 
 A total of 12 jobs should be submitted by DAGMan, and the only DAGMan output files generated
 are those corresponding to `spliced.dag`. 
-Once the DAG workflow is finished, examine the contents of `spliced.dag.dagman.out`. 
-Did DAGMan run the nodes in the order that you expected?
 
 For more information on the `SPLICE` utility, see the
 [DAGMan Splicing Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/dagman-using-other-dags.html#dag-splicing).
