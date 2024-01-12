@@ -1,0 +1,15 @@
+# Diamond DAG utilizing node VARS
+JOB job1 message.sub
+JOB job2a message.sub
+JOB job2b message.sub
+JOB job3 message.sub
+
+VARS ALL_NODES my_message="No message provided."
+
+VARS job1 my_message="Thanks RCFs for your hard work!!"
+VARS job2a my_message="DAGMan is scary."
+VARS job2b my_message="HTCondor is cool."
+
+PARENT job1 CHILD job2a job2b
+PARENT job2a job2b CHILD job3
+

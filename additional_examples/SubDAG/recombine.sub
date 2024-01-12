@@ -1,0 +1,16 @@
+# This job combines the outputs in the ./echo/ folder,
+# which were produced by the "other.dag" sub-DAG. 
+executable = recombine.sh
+log        = recombine.log
+
+# Note the trailing '/' - this tells HTCondor to transfer 
+# the *contents* of the ./echo/ folder, but not the
+# folder itself.
+transfer_input_files = echo/
+
+request_cpus   = 1
+request_memory = 1GB 
+request_disk   = 1GB
+
+queue
+

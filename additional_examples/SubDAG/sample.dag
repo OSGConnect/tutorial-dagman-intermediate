@@ -1,0 +1,8 @@
+# A DAG that runs a dynamically created SubDAG
+JOB split split.sub
+SUBDAG EXTERNAL my_subdag my_subdag.dag
+JOB recombine recombine.sub
+
+PARENT split CHILD my_subdag
+PARENT my_subdag CHILD recombine 
+

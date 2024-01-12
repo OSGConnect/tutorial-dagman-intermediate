@@ -1,7 +1,0 @@
-JOB A fail.sub DIR FailJob
-JOB B fail.sub DIR FailJob
-
-PARENT A CHILD B
-
-SCRIPT POST ALL_NODES ../post.sh $RETURN
-

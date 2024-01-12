@@ -1,0 +1,7 @@
+Executing `filter.sh`
+Tue Dec 26 16:49:12 CST 2023
+
+Data File = ../data.csv
+
+Removed the following lines from ../data.csv:
+cat

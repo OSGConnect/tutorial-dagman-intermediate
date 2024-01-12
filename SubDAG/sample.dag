@@ -1,8 +1,0 @@
-# A DAG that runs a dynamically created SubDAG
-JOB PRODUCTION produce.sub
-SUBDAG EXTERNAL BAG other.dag
-JOB END sleep.sub
-
-PARENT PRODUCTION CHILD BAG
-PARENT BAG CHILD END 
-

@@ -1,0 +1,7 @@
+JOB job1 job1.sub DIR ./job1
+JOB job2 job2.sub DIR ./job2
+
+PARENT job1 CHILD job2
+
+SCRIPT PRE job2 ./verify.sh
+
