@@ -40,7 +40,7 @@ also renamed to help keep track of their origin.
 The nodes are renamed using the syntax `<Splice Name>+<Original Node Name>` where
 `<Original Node Name>` is the name of the node as defined in `<Splice Input>.dag`. 
 This allows you to define multiple splices using the same input DAG.
-For example, if `<Splice Input>.dag` defines node `A` and you could define a splice `X`
+For example, if `<Splice Input>.dag` defines node `A` and you define a splice `X`
 and splice `Y` using that input DAG, the resulting node names in the larger DAG would 
 be `X+A` and `Y+A`, respectively.
 
