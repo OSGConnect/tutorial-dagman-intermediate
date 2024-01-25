@@ -51,9 +51,7 @@ The two most important commands in the DAG description language are:
 These commands have been used to construct the Diamond DAG and are saved in the file `diamond.dag`. 
 To view the contents of `diamond.dag`, run 
 
-```
-cat diamond.dag
-```
+<pre class="term"><code>$ cat diamond.dag</code></pre>
 
 Before you continue, we recommend that you closely examine the contents of `diamond.dag` and identify its components. 
 Furthermore, try to identify the submit file for each node, and use that submit file to determine the nature of the HTCondor job that will be submitted for each node.
@@ -62,11 +60,9 @@ Furthermore, try to identify the submit file for each node, and use that submit 
 
 To submit a DAGMan workflow to HTCondor, you can use one of the following commands:
 
-```
-$ condor_submit_dag diamond.dag
+<pre class="term"><code>$ condor_submit_dag diamond.dag
   or
-$ htcondor dag submit diamond.dag
-```
+$ htcondor dag submit diamond.dag</code></pre>
 
 ## What Happens?
 
@@ -105,39 +101,32 @@ That also means that you can interact with these jobs, though in a more limited 
 A plain `condor_q` command will show a condensed batch view of the jobs submitted, running, and managed by the DAGMan job proper. 
 For more information about jobs running under DAGMan, use the `-nobatch` and `-dag` flags:
 
-```
-# Basic job query (Batched/Condensed)
+<pre class="term"><code># Basic job query (Batched/Condensed)
 $ condor_q
 
 # Non-Batched query
 $ condor_q -nobatch
 
 # Increased information
-$ condor_q -nobatch -dag
-```
+$ condor_q -nobatch -dag</code></pre>
 
 You can also watch the progress of the DAG and the jobs running under it
 by running:
 
-```
-$ condor_watch_q
-```
+<pre class="term"><code>$ condor_watch_q</code></pre>
 
 > Note that `condor_watch_q` works by monitoring the log files of jobs that are in the queue, but only at the time of its execution. 
 > Additional jobs submitted by DAGMan while `condor_watch_q` is running will not appear in `condor_watch_q`.
 > To see additional jobs as they are submitted, wait for DAGMan to create the `.nodes.log` file, then run
 >
-> ```
-> $ condor_watch_q -files *.log
-> ```
+> <pre class="term"><code>$ condor_watch_q -files *.log</code></pre>
+>
 
 For more detail about the status and progress of your DAG workflow, you can use the noun-verb command:
 
-```
-$ htcondor dag status <DAGManJobID>
-```
+<pre class="term"><code>$ htcondor dag status DAGManJobID</code></pre>
 
-where `<DAGManJobID>` is the ID for the DAGMan job proper. 
+where `DAGManJobID` is the ID for the DAGMan job proper. 
 Note that the information in the output of this command does not update frequently, and so it is not suited for short-lived DAG workflows such as the current example.
 
 When your DAG workflow has completed, the DAGMan job proper will disappear from the queue. 
