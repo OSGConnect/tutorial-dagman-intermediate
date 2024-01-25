@@ -1,6 +1,19 @@
+---
+ospool:
+    path: htc_workloads/automated_workflows/tutorial-dagman-intermediate/README.md
+---
+
 # Exploring HTCondor's DAGMan
 
 This tutorial helps you explore HTCondor's DAGMan its many features.
+You can download the tutorial materials with the following command:
+
+<pre class="term"><code>$ git clone https://github.com/OSGConnect/tutorial-dagman-intermediate</code></pre>
+
+Now move into the new directory to see the contents of the tutorial:
+
+<pre class="term"><code>$ cd tutorial-dagman-intermediate</code></pre>
+
 At the top level is a worked example of a "Diamond DAG" that summarizes the basic components of a creating, submitting, and managing DAGMan workflows.
 In the lower level [/additional_examples](/additional_examples/) directory are more worked examples with their own `README`s highlighting specific features that can be used with DAGMan.
 Brief descriptions of these examples are provided in the [Additional Examples](#additional-examples) section at the end of this tutorial.
