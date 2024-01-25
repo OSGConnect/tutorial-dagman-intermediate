@@ -33,7 +33,7 @@ and merely needs to be executed as part of the larger workflow.
 A more complex use case is for submitting a SubDAG of arbitrary size, 
 the size of which is not known when you submit the main DAG workflow.
 Consider the split-and-recombine workflow that was mentioned in the
-[top level of this tutorial repository](../../README.md). In that scenario, the first node splits
+top level of this tutorial repository. In that scenario, the first node splits
 into multiple nodes before the results are recombined by the final node.
 What if you didn't know the number of nodes that the first node would 
 generate? For a regular DAG, this would be an insurmountable problem
