@@ -15,13 +15,13 @@ Now move into the new directory to see the contents of the tutorial:
 <pre class="term"><code>$ cd tutorial-dagman-intermediate</code></pre>
 
 At the top level is a worked example of a "Diamond DAG" that summarizes the basic components of a creating, submitting, and managing DAGMan workflows.
-In the lower level [/additional_examples](/additional_examples/) directory are more worked examples with their own `README`s highlighting specific features that can be used with DAGMan.
+In the lower level `additional_examples` directory are more worked examples with their own `README`s highlighting specific features that can be used with DAGMan.
 Brief descriptions of these examples are provided in the [Additional Examples](#additional-examples) section at the end of this tutorial.
 
 Before working on this tutorial, we recommend that you read through our other DAGMan guides:
 
-* [Submit Workflows with HTCondor's DAGMan]() 
-* [Simple Example of a DAGMan Workflow]()
+* [Submit Workflows with HTCondor's DAGMan](https://portal.osg-htc.org/documentation/htc_workloads/automated_workflows/dagman-workflows/) 
+* [Simple Example of a DAGMan Workflow](https://portal.osg-htc.org/documentation/htc_workloads/automated_workflows/dagman-simple-example/)
 
 The definitive guide to DAGMan is [HTCondor's DAGMan Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/index.html).
 
@@ -40,7 +40,7 @@ These types are by no means "official", nor are they the only types of structure
 As mentioned above, the "Diamond DAG" is the simplest example of a "split and recombine" DAG.
 In this case, the first node `TOP` is connected to two nodes `LEFT` and `RIGHT` (the "split"), which are then connected to the final node `BOTTOM` (the "recombine").
 
-![Diamond DAG figure](.images/DiamondDAG.png)
+![Diamond DAG figure](https://raw.githubusercontent.com/OSGConnect/tutorial-dagman-intermediate/main/.images/DiamondDAG.png)
 
 To describe the flow of the DAG and the parts needed to execute it, DAGMan uses a custom description language in an input file, typically named `<DAG Name>.dag`. 
 The two most important commands in the DAG description language are:
