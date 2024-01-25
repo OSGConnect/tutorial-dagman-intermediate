@@ -3,7 +3,7 @@ ospool:
     path: htc_workloads/automated_workflows/tutorial-dagman-intermediate/README.md
 ---
 
-# Exploring HTCondor's DAGMan
+# Intermediate DAGMan: Uses and Features
 
 This tutorial helps you explore HTCondor's DAGMan its many features.
 You can download the tutorial materials with the following command:
