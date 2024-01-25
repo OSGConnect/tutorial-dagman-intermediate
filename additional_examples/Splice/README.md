@@ -63,11 +63,11 @@ PARENT diamond CHILD finalize
 
 With this input file, we've defined the following relations:
 
-![Spliced DAG figure](../../.images/SplicedDiamondDAG.png)
+![Spliced DAG figure](https://raw.githubusercontent.com/OSGConnect/tutorial-dagman-intermediate/main/.images/SplicedDiamondDAG.png)
 
 When submitted, DAGMan will copy the nodes from `diamond.dag` into the spliced DAG (with renaming), so that the actual nodes and relationships look like this:
 
-![Spliced Diamond DAG figure](../../.images/SplicedDiamondDAGFull.png)
+![Spliced Diamond DAG figure](https://raw.githubusercontent.com/OSGConnect/tutorial-dagman-intermediate/main/.images/SplicedDiamondDAGFull.png)
 
 ## Exercise
 
@@ -79,11 +79,11 @@ spliced into `spliced.dag`.
 
 Check your understanding using the following figures:
 
-[spliced.dag](../../.images/SplicedCrossDAG.png)
+[spliced.dag](https://raw.githubusercontent.com/OSGConnect/tutorial-dagman-intermediate/main/.images/SplicedCrossDAG.png)
 
-[cross.dag](../../.images/CrossDAG.png)
+[cross.dag](https://raw.githubusercontent.com/OSGConnect/tutorial-dagman-intermediate/main/.images//CrossDAG.png)
 
-[Full DAG after splicing](../../.images/SplicedCrossDAGFull.png)
+[Full DAG after splicing](https://raw.githubusercontent.com/OSGConnect/tutorial-dagman-intermediate/main/.images//SplicedCrossDAGFull.png)
 
 Now submit the spliced DAG without modification:
 
