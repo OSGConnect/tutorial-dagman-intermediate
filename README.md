@@ -20,7 +20,7 @@ Brief descriptions of these examples are provided in the [Additional Examples](#
 
 Before working on this tutorial, we recommend that you read through our other DAGMan guides:
 
-* [Submit Workflows with HTCondor's DAGMan](https://portal.osg-htc.org/documentation/htc_workloads/automated_workflows/dagman-workflows/) 
+* [Overview: Submit Workflows with HTCondor's DAGMan](https://portal.osg-htc.org/documentation/htc_workloads/automated_workflows/dagman-workflows/) 
 * [Simple Example of a DAGMan Workflow](https://portal.osg-htc.org/documentation/htc_workloads/automated_workflows/dagman-simple-example/)
 
 The definitive guide to DAGMan is [HTCondor's DAGMan Documentation](https://htcondor.readthedocs.io/en/latest/automated-workflows/index.html).
